@@ -1,10 +1,8 @@
 package startup
 
 import (
-	"net/http"
-
-	"github.com/gin-gonic/gin"
 	"github.com/nhutHao02/social-network-user-service/config"
+	http "github.com/nhutHao02/social-network-user-service/internal/http"
 )
 
 func StartServer() {
@@ -14,14 +12,16 @@ func StartServer() {
 	// database setup
 
 	// setup route
-	r := gin.Default()
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "pong",
-		})
-	})
 
 	// setup server
-	r.Run(cfg.HTTPServer.Address)
+	runServer(cfg)
 
+}
+
+func runServer(*config.Config) {
+
+	// run http server
+	http.RunHTTPServer()
+
+	// run grpc server
 }
