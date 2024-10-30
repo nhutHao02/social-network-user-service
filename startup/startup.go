@@ -2,26 +2,28 @@ package startup
 
 import (
 	"github.com/nhutHao02/social-network-user-service/config"
-	http "github.com/nhutHao02/social-network-user-service/internal/http"
+	"github.com/nhutHao02/social-network-user-service/internal/api"
+	"github.com/nhutHao02/social-network-user-service/internal/api/http"
 )
 
-func StartServer() {
+func Start() {
 	// load congig
 	cfg := config.LoadConfig()
 
 	// database setup
 
-	// setup route
+	// server
+	http_server := http.NewHTTPServer(cfg)
 
-	// setup server
-	runServer(cfg)
+	server := api.NewSerVer(http_server)
+	runServer(server)
 
 }
 
-func runServer(*config.Config) {
+func runServer(server *api.Server) {
 
 	// run http server
-	http.RunHTTPServer()
+	server.HTTPServer.RunHTTPServer()
 
 	// run grpc server
 }
