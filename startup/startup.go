@@ -13,8 +13,10 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/nhutHao02/social-network-user-service/config"
+	"github.com/nhutHao02/social-network-user-service/database"
+	"github.com/nhutHao02/social-network-user-service/internal"
 	"github.com/nhutHao02/social-network-user-service/internal/api"
-	"github.com/nhutHao02/social-network-user-service/internal/api/http"
+	// "github.com/nhutHao02/social-network-user-service/internal/api/http"
 )
 
 func Start() {
@@ -26,12 +28,17 @@ func Start() {
 
 	// run migration
 	migration(cfg)
+
 	// database setup
+	db := database.OpenConnect(cfg.Database)
+
+	// init Server
+	server := internal.InitializeServer(cfg, db)
 
 	// server
-	http_server := http.NewHTTPServer(cfg)
+	// http_server := http.NewHTTPServer(cfg)
 
-	server := api.NewSerVer(http_server)
+	// server := api.NewSerVer(http_server)
 	runServer(server)
 
 }

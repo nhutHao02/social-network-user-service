@@ -12,3 +12,8 @@ type userQueryRepository struct {
 func NewUserQueryRepository(db *sqlx.DB) user.UserQueryRepository {
 	return &userQueryRepository{db: db}
 }
+
+// QueryMethod implements user.UserQueryRepository.
+func (u *userQueryRepository) QueryMethod() {
+	panic("unimplemented")
+}

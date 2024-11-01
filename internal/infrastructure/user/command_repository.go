@@ -12,3 +12,8 @@ type userCommandRepository struct {
 func NewUserCommandRepository(db *sqlx.DB) user.UserCommandRepository {
 	return &userCommandRepository{db: db}
 }
+
+// CommandMethod implements user.UserCommandRepository.
+func (u *userCommandRepository) CommandMethod() {
+	panic("unimplemented")
+}
