@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS `location` (
+  `ID` INT(11) NOT NULL AUTO_INCREMENT,
+  `City` VARCHAR(255),
+  `District` VARCHAR(255),
+  `Ward` VARCHAR(255),
+  `Description` TEXT,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
