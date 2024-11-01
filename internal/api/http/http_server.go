@@ -7,13 +7,12 @@ import (
 )
 
 type HTTPServer struct {
-	cfg *config.Config
-	// handlers
-	// example addressHandler at V1
+	cfg         *config.Config
+	userHandler *v1.UserHandler
 }
 
-func NewHTTPServer(cfg *config.Config) *HTTPServer {
-	return &HTTPServer{cfg: cfg}
+func NewHTTPServer(cfg *config.Config, userHandler *v1.UserHandler) *HTTPServer {
+	return &HTTPServer{cfg: cfg, userHandler: userHandler}
 }
 
 func (s *HTTPServer) RunHTTPServer() {
