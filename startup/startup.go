@@ -16,7 +16,7 @@ import (
 	"github.com/nhutHao02/social-network-user-service/database"
 	"github.com/nhutHao02/social-network-user-service/internal"
 	"github.com/nhutHao02/social-network-user-service/internal/api"
-	// "github.com/nhutHao02/social-network-user-service/internal/api/http"
+	"github.com/nhutHao02/social-network-user-service/pkg/redis"
 )
 
 func Start() {
@@ -32,8 +32,11 @@ func Start() {
 	// database setup
 	db := database.OpenConnect(cfg.Database)
 
+	// init redis
+	rdb := redis.InitRedis(cfg.Redis)
+
 	// init Server
-	server := internal.InitializeServer(cfg, db)
+	server := internal.InitializeServer(cfg, db, rdb)
 
 	// server
 	// http_server := http.NewHTTPServer(cfg)

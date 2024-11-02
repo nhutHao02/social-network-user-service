@@ -9,9 +9,10 @@ import (
 )
 
 type Config struct {
-	ServerName string            `yaml:"service_name"`
-	HTTPServer *HTTPServerConfig `yaml:"http_server"`
+	ServerName string            `yaml:"service-name"`
+	HTTPServer *HTTPServerConfig `yaml:"http-server"`
 	Database   *DatabaseConfig   `yaml:"database"`
+	Redis      *RedisConfig      `yaml:"redis"`
 }
 
 type HTTPServerConfig struct {
@@ -19,9 +20,16 @@ type HTTPServerConfig struct {
 }
 
 type DatabaseConfig struct {
-	ConnectionString  string `yaml:"connection_string"`
-	DbType            string `yaml:"db_type"`
-	MigrationFilePath string `yaml:"migration_file_path"`
+	ConnectionString  string `yaml:"connection-string"`
+	DbType            string `yaml:"db-type"`
+	MigrationFilePath string `yaml:"migration-file-path"`
+}
+
+type RedisConfig struct {
+	Address  string `yaml:"address"`
+	Password string `yaml:"password"`
+	Db       int    `yaml:"db"`
+	PoolSize int    `yaml:"pool-size"`
 }
 
 func LoadConfig() *Config {

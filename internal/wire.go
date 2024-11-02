@@ -12,6 +12,7 @@ import (
 	"github.com/nhutHao02/social-network-user-service/internal/api/http/v1"
 	"github.com/nhutHao02/social-network-user-service/internal/application/imp"
 	"github.com/nhutHao02/social-network-user-service/internal/infrastructure/user"
+	"github.com/nhutHao02/social-network-user-service/pkg/redis"
 )
 
 var serverSet = wire.NewSet(
@@ -35,7 +36,7 @@ var repositorySet = wire.NewSet(
 	user.NewUserQueryRepository,
 )
 
-func InitializeServer(cfg *config.Config, db *sqlx.DB) *api.Server {
+func InitializeServer(cfg *config.Config, db *sqlx.DB, rdb *redis.RedisClient) *api.Server {
 	wire.Build(serverSet, itemServerSet, httpHandlerSet, serviceSet, repositorySet)
 	return &api.Server{}
 }

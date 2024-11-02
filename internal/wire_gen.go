@@ -15,14 +15,15 @@ import (
 	"github.com/nhutHao02/social-network-user-service/internal/api/http/v1"
 	"github.com/nhutHao02/social-network-user-service/internal/application/imp"
 	"github.com/nhutHao02/social-network-user-service/internal/infrastructure/user"
+	"github.com/nhutHao02/social-network-user-service/pkg/redis"
 )
 
 // Injectors from wire.go:
 
-func InitializeServer(cfg *config.Config, db *sqlx.DB) *api.Server {
+func InitializeServer(cfg *config.Config, db *sqlx.DB, rdb *redis.RedisClient) *api.Server {
 	userQueryRepository := user.NewUserQueryRepository(db)
 	userCommandRepository := user.NewUserCommandRepository(db)
-	userSerVice := imp.NewUserService(userQueryRepository, userCommandRepository)
+	userSerVice := imp.NewUserService(userQueryRepository, userCommandRepository, rdb)
 	userHandler := v1.NewUserHandler(userSerVice)
 	httpServer := http.NewHTTPServer(cfg, userHandler)
 	server := api.NewSerVer(httpServer)
