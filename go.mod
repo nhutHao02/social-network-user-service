@@ -6,7 +6,7 @@ require (
 	github.com/gin-gonic/gin v1.10.0
 	github.com/golang-migrate/migrate/v4 v4.18.1
 	github.com/google/wire v0.6.0
-	github.com/nhutHao02/social-network-common-service v0.0.0-20241030101954-5a6b3945a20a
+	github.com/nhutHao02/social-network-common-service v0.0.0-20241106145456-b9849ed91b42
 	go.uber.org/zap v1.27.0
 	gopkg.in/yaml.v3 v3.0.1
 )
@@ -26,7 +26,7 @@ require (
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
-	github.com/go-playground/validator/v10 v10.20.0 // indirect
+	github.com/go-playground/validator/v10 v10.22.1 // indirect
 	github.com/go-sql-driver/mysql v1.8.1
 	github.com/goccy/go-json v0.10.2 // indirect
 	github.com/golang-jwt/jwt/v5 v5.2.1 // indirect
@@ -51,4 +51,5 @@ require (
 	golang.org/x/sys v0.25.0 // indirect
 	golang.org/x/text v0.18.0 // indirect
 	google.golang.org/protobuf v1.34.2 // indirect
+	gopkg.in/guregu/null.v3 v3.5.0
 )

@@ -17,6 +17,6 @@ func NewHTTPServer(cfg *config.Config, userHandler *v1.UserHandler) *HTTPServer 
 
 func (s *HTTPServer) RunHTTPServer() {
 	r := gin.Default()
-	v1.MapRoutes(r)
+	v1.MapRoutes(r, s.userHandler)
 	r.Run(s.cfg.HTTPServer.Address)
 }

@@ -1,6 +1,7 @@
 package database
 
 import (
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
 	"github.com/nhutHao02/social-network-common-service/utils/logger"
 	"github.com/nhutHao02/social-network-user-service/config"

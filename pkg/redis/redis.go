@@ -53,7 +53,7 @@ func (r *RedisClient) SetCacheStructData(ctx context.Context, key string, data i
 func (r *RedisClient) GetCache(ctx context.Context, key string) (val string, err error) {
 	val, err = r.Rdb.Get(ctx, key).Result()
 	if err == redis.Nil {
-		return
+		return val, nil
 	} else if err != nil {
 		return
 	}
