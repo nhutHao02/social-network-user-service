@@ -84,12 +84,6 @@ github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd/go.mod h1:6dJ
 github.com/modern-go/reflect2 v1.0.2 h1:xBagoLtFs94CBntxluKeaWgTMpvLxC4ur3nMaC9Gz0M=
 github.com/modern-go/reflect2 v1.0.2/go.mod h1:yWuevngMOJpCy52FWWMvUC8ws7m/LJsjYzDa0/r8luk=
 github.com/morikuni/aec v1.0.0 h1:nP9CBfwrvYnBRgY6qfDQkygYDmYwOilePFkwzv4dU8A=
-github.com/nhutHao02/social-network-common-service v0.0.0-20241101153403-5b5472e63752 h1:E0Gzmvs7K428KYhQ91tjP+Xn6XrJTM0f9Wf1z9GQFUI=
-github.com/nhutHao02/social-network-common-service v0.0.0-20241101153403-5b5472e63752/go.mod h1:KbBsWfPh2CpOyu18EVmVacBn3P+orb8tCn36HetDyLY=
-github.com/nhutHao02/social-network-common-service v0.0.0-20241102081429-d16295089a65 h1:l9MmrNmZhqPNrs7Ymqbpf0vh9eVBCF2ezayW4Z4tcc4=
-github.com/nhutHao02/social-network-common-service v0.0.0-20241102081429-d16295089a65/go.mod h1:KbBsWfPh2CpOyu18EVmVacBn3P+orb8tCn36HetDyLY=
-github.com/nhutHao02/social-network-common-service v0.0.0-20241106144535-22d271505ef1 h1:PronFaQQnIUOgCKSMXYjHgF+zmj2VPc1ZvqFbeHE4Xc=
-github.com/nhutHao02/social-network-common-service v0.0.0-20241106144535-22d271505ef1/go.mod h1:KbBsWfPh2CpOyu18EVmVacBn3P+orb8tCn36HetDyLY=
 github.com/nhutHao02/social-network-common-service v0.0.0-20241106145456-b9849ed91b42 h1:wZ5KYBaZQx9sR25iYghtggQ9vFsTTk7clYIt4pRqRwg=
 github.com/nhutHao02/social-network-common-service v0.0.0-20241106145456-b9849ed91b42/go.mod h1:KbBsWfPh2CpOyu18EVmVacBn3P+orb8tCn36HetDyLY=
 github.com/opencontainers/go-digest v1.0.0 h1:apOUWs51W5PlhuyGyz9FCeeBIOUDA/6nW8Oi/yOhh5U=

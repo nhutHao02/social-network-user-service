@@ -3,11 +3,13 @@ package user
 import (
 	"context"
 
+	"github.com/nhutHao02/social-network-user-service/internal/domain/entity"
 	"github.com/nhutHao02/social-network-user-service/internal/domain/model"
 )
 
 type UserQueryRepository interface {
 	CheckUserExisted(ctx context.Context, email string) (bool, error)
+	Login(ctx context.Context, req model.LoginRequest) (*entity.User, error)
 }
 
 type UserCommandRepository interface {
