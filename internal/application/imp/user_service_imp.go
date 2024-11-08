@@ -20,6 +20,15 @@ type userService struct {
 	cache                 *redis.RedisClient
 }
 
+// GetUserInfo implements application.UserSerVice.
+func (u *userService) GetUserInfo(c context.Context, userID int) (*model.UserInfoResponse, error) {
+	res, err := u.userQueryRepository.GetUserInfo(c, userID)
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
+}
+
 func hashPassword(password string) (string, error) {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
 	return string(bytes), err

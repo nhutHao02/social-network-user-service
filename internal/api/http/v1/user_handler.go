@@ -59,3 +59,15 @@ func (h *UserHandler) SignUp(c *gin.Context) {
 
 	c.JSON(http.StatusOK, common.NewSuccessResponse(success))
 }
+
+func (h *UserHandler) GetUserInfo(c *gin.Context) {
+	var userParam model.UserParam
+	request.GetParamsFromUrl(c, &userParam)
+
+	res, err := h.userService.GetUserInfo(c.Request.Context(), userParam.ID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, common.NewErrorResponse(err.Error(), "Get user info failure"))
+		return
+	}
+	c.JSON(http.StatusOK, common.NewSuccessResponse(res))
+}

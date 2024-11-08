@@ -16,6 +16,45 @@ type userQueryRepository struct {
 	db *sqlx.DB
 }
 
+// GetUserInfo implements user.UserQueryRepository.
+func (repo *userQueryRepository) GetUserInfo(ctx context.Context, userID int) (*model.UserInfoResponse, error) {
+	var res model.UserInfoResponse
+	query := `select 
+				u.ID ,
+				u.Email,
+				u.FullName,
+				u.Sex,
+				u.Bio,
+				u.UrlAvt,
+				u.UrlBackground,
+				u.CreatedAt,
+				u.UpdatedAt,
+				l.ID as 'location.ID',
+				l.City as 'location.City',
+				l.District as 'location.District',
+				l.Ward as 'location.Ward',
+				l.Description as 'location.Description',
+				l.CreatedAt as 'location.CreatedAt',
+				l.UpdatedAt as 'location.UpdatedAt',
+				l.DeletedAt as 'location.DeletedAt'
+				from user u
+				left join location l
+				on u.LocationID = l.ID
+				where u.ID = ? and u.DeletedAt is null and l.DeletedAt is null`
+
+	err := repo.db.GetContext(ctx, &res, query, userID)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			logger.Error("GetUserInfo: repo get user info error", zap.Error(err))
+			return nil, nil
+		}
+		logger.Error("GetUserInfo: repo get user info error", zap.Error(err))
+		return nil, err
+	}
+	return &res, nil
+
+}
+
 // Login implements user.UserQueryRepository.
 func (repo *userQueryRepository) Login(ctx context.Context, req model.LoginRequest) (*entity.User, error) {
 	var user entity.User

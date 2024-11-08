@@ -15,6 +15,10 @@ func MapRoutes(
 	v1 := router.Group("/api/v1")
 	{
 		v1.Use(middleware.JwtAuthMiddleware(logger.GetDefaultLogger()))
+		vUser := v1.Group("/user")
+		vUser.GET("/:id", userHandler.GetUserInfo)
+		vUser.PUT("")
+
 		// test api
 		v1.GET("/ping", func(c *gin.Context) {
 			logger.Info("this is log test")

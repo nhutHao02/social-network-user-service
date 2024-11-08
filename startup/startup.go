@@ -27,7 +27,7 @@ func Start() {
 	cfg := config.LoadConfig()
 
 	// run migration
-	migration(cfg)
+	// migration(cfg)
 
 	// database setup
 	db := database.OpenConnect(cfg.Database)

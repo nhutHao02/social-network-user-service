@@ -10,6 +10,7 @@ import (
 type UserQueryRepository interface {
 	CheckUserExisted(ctx context.Context, email string) (bool, error)
 	Login(ctx context.Context, req model.LoginRequest) (*entity.User, error)
+	GetUserInfo(ctx context.Context, userID int) (*model.UserInfoResponse, error)
 }
 
 type UserCommandRepository interface {
