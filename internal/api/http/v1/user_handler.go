@@ -7,8 +7,10 @@ import (
 	common "github.com/nhutHao02/social-network-common-service/model"
 	"github.com/nhutHao02/social-network-common-service/request"
 	"github.com/nhutHao02/social-network-common-service/utils/logger"
+	"github.com/nhutHao02/social-network-common-service/utils/token"
 	"github.com/nhutHao02/social-network-user-service/internal/application"
 	"github.com/nhutHao02/social-network-user-service/internal/domain/model"
+
 	"go.uber.org/zap"
 )
 
@@ -70,4 +72,29 @@ func (h *UserHandler) GetUserInfo(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, common.NewSuccessResponse(res))
+}
+
+func (h *UserHandler) UpdateUserInfo(c *gin.Context) {
+	var req model.UserUpdateRequest
+	err := request.GetBodyJSON(c, &req)
+	if err != nil {
+		return
+	}
+	userID, err := token.GetUserId(c)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, common.NewErrorResponse(err.Error(), "Update user info failure "))
+		return
+	}
+	if req.ID != int(userID) {
+		c.JSON(http.StatusBadRequest, common.NewErrorResponse("Invalid user ID", "Update user info failure"))
+		return
+	}
+
+	success, err := h.userService.UpdateUserInfo(c.Request.Context(), req)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, common.NewErrorResponse(err.Error(), "Update user info failure"))
+		return
+	}
+	c.JSON(http.StatusOK, common.NewSuccessResponse(success))
+
 }

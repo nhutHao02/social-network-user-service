@@ -1,7 +1,9 @@
 package startup
 
 import (
+	"context"
 	"database/sql"
+	"fmt"
 	"log"
 	"strings"
 
@@ -34,6 +36,12 @@ func Start() {
 
 	// init redis
 	rdb := redis.InitRedis(cfg.Redis)
+	// Test connection
+	_, err := rdb.Rdb.Ping(context.Background()).Result()
+	if err != nil {
+		logger.Error("failed to init redis------------", zap.Error(err))
+		panic(fmt.Sprintf("Could not connect to Redis: %v", err))
+	}
 
 	// init Server
 	server := internal.InitializeServer(cfg, db, rdb)

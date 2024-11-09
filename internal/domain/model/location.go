@@ -12,3 +12,10 @@ type LocationResponse struct {
 	UpdatedAt   *time.Time `json:"updatedAt" db:"UpdatedAt"`
 	DeletedAt   *time.Time `json:"deletedAt" db:"DeletedAt"`
 }
+
+type LocationUpdateRequest struct {
+	City        *string `json:"city" db:"City"`
+	District    *string `json:"district" db:"District"`
+	Ward        *string `json:"ward" db:"Ward"`
+	Description *string `json:"description" db:"Description"`
+}

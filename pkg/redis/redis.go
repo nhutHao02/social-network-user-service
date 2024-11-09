@@ -35,7 +35,12 @@ func (r *RedisClient) SetCacheStringData(ctx context.Context, key string, data s
 	return
 }
 
-func (r *RedisClient) SetCacheStructData(ctx context.Context, key string, data interface{}, ttl time.Duration) (err error) {
+func (r *RedisClient) SetCacheStructData(
+	ctx context.Context,
+	key string,
+	data interface{},
+	ttl time.Duration,
+) (err error) {
 	jsonData, err := json.Marshal(data)
 	if err != nil {
 		logger.Error("SetCacheStructData: Convert data to json fail = ", zap.Error(err))
@@ -69,8 +74,8 @@ func (r *RedisClient) DeleteCache(ctx context.Context, key string) (err error) {
 	return
 }
 
-func (r *RedisClient) ConvertDataToStruct(dest *interface{}, data string) (err error) {
-	err = json.Unmarshal([]byte(data), dest)
+func (r *RedisClient) ConvertDataToStruct(dest interface{}, data string) (err error) {
+	err = json.Unmarshal([]byte(data), &dest)
 	if err != nil {
 		logger.Error("ConvertDataToStruct: convert data from cache to struct fail = ", zap.Error(err))
 		return

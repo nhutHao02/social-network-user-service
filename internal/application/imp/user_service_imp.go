@@ -2,6 +2,8 @@ package imp
 
 import (
 	"context"
+	"strings"
+	"time"
 
 	resError "github.com/nhutHao02/social-network-common-service/utils/error"
 	"github.com/nhutHao02/social-network-common-service/utils/logger"
@@ -20,11 +22,43 @@ type userService struct {
 	cache                 *redis.RedisClient
 }
 
+// UpdateUserInfo implements application.UserSerVice.
+func (u *userService) UpdateUserInfo(c context.Context, req model.UserUpdateRequest) (bool, error) {
+	success, err := u.userCommandRepository.UpdateUserInfo(c, req)
+	if err != nil {
+		return false, err
+	}
+
+	// clear cache
+	err = u.cache.DeleteCache(c, string(req.ID))
+	if err != nil {
+		logger.Error("UpdateUserInfo: Clear cache with userID error", zap.Error(err))
+	}
+
+	return success, nil
+}
+
 // GetUserInfo implements application.UserSerVice.
 func (u *userService) GetUserInfo(c context.Context, userID int) (*model.UserInfoResponse, error) {
+	// check cache
+	value, err := u.cache.GetCache(c, string(userID))
+	if len(strings.TrimSpace(value)) != 0 && err == nil {
+		var res model.UserInfoResponse
+		err = u.cache.ConvertDataToStruct(&res, value)
+		if err == nil {
+			return &res, nil
+		}
+	}
+
 	res, err := u.userQueryRepository.GetUserInfo(c, userID)
 	if err != nil {
 		return nil, err
+	}
+
+	// save cache
+	err = u.cache.SetCacheStructData(c, string(userID), res, 24*time.Hour)
+	if err != nil {
+		logger.Error("Save user info to cache error", zap.Error(err))
 	}
 	return res, nil
 }
@@ -81,7 +115,7 @@ func (u *userService) Login(c context.Context, req model.LoginRequest) (model.Lo
 		return res, resError.NewResError(nil, "Invalid password")
 	}
 
-	token, err := token.CreateToken(string(user.ID))
+	token, err := token.CreateToken(user.ID)
 	if err != nil {
 		logger.Error("Login: create token error: ", zap.Error(err))
 		return res, err

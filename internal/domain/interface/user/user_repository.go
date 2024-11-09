@@ -15,4 +15,5 @@ type UserQueryRepository interface {
 
 type UserCommandRepository interface {
 	RegisterUser(ctx context.Context, req model.SignUpRequest) (bool, error)
+	UpdateUserInfo(ctx context.Context, req model.UserUpdateRequest) (bool, error)
 }

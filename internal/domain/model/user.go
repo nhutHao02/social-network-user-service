@@ -21,3 +21,13 @@ type UserInfoResponse struct {
 	DeletedAt        *time.Time        `json:"deletedAt" db:"DeletedAt"`
 	LocationResponse *LocationResponse `json:"location" db:"location"`
 }
+
+type UserUpdateRequest struct {
+	ID            int                    `json:"id" db:"ID"`
+	FullName      *string                `json:"fullName" db:"FullName"`
+	Sex           *bool                  `json:"sex" db:"Sex"`
+	Bio           *string                `json:"bio" db:"Bio"`
+	UrlAvt        *string                `json:"UrlAvt" db:"UrlAvt"`
+	UrlBackground *string                `json:"UrlBackground" db:"UrlBackground"`
+	Location      *LocationUpdateRequest `json:"location"`
+}
