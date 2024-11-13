@@ -13,8 +13,8 @@ type User struct {
 	FullName      null.String `json:"fullName" db:"FullName"`
 	Sex           null.Bool   `json:"sex" db:"Sex"`
 	Bio           null.String `json:"bio" db:"Bio"`
-	UrlAvt        null.String `json:"UrlAvt" db:"UrlAvt"`
-	UrlBackground null.String `json:"UrlBackground" db:"UrlBackground"`
+	UrlAvt        null.String `json:"urlAvt" db:"UrlAvt"`
+	UrlBackground null.String `json:"urlBackground" db:"UrlBackground"`
 	CreatedAt     time.Time   `json:"createdAt" db:"CreatedAt"`
 	UpdatedAt     time.Time   `json:"updatedAt" db:"UpdatedAt"`
 	DeletedAt     *time.Time  `json:"deletedAt" db:"DeletedAt"`

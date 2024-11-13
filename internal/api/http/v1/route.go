@@ -1,8 +1,6 @@
 package v1
 
 import (
-	"net/http"
-
 	"github.com/gin-gonic/gin"
 	"github.com/nhutHao02/social-network-common-service/middleware"
 	"github.com/nhutHao02/social-network-common-service/utils/logger"
@@ -16,16 +14,11 @@ func MapRoutes(
 	{
 		v1.Use(middleware.JwtAuthMiddleware(logger.GetDefaultLogger()))
 		vUser := v1.Group("/user")
-		vUser.GET("/:id", userHandler.GetUserInfo)
+		vUser.GET(":id", userHandler.GetUserInfo)
 		vUser.PUT("", userHandler.UpdateUserInfo)
-
-		// test api
-		v1.GET("/ping", func(c *gin.Context) {
-			logger.Info("this is log test")
-			c.JSON(http.StatusOK, gin.H{
-				"message": "middleware success",
-			})
-		})
+		vUser.PUT("change-password", userHandler.ChangePassword)
+		vUser.POST("follow", userHandler.Follow)
+		vUser.POST("un-follow", userHandler.UnFollow)
 	}
 
 	v1Guest := router.Group("ap1/v1/guest")

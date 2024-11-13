@@ -22,6 +22,69 @@ type userService struct {
 	cache                 *redis.RedisClient
 }
 
+// UnFollow implements application.UserSerVice.
+func (u *userService) UnFollow(c context.Context, req model.FollowRequest) (bool, error) {
+	// check user
+	_, err := u.userQueryRepository.CheckUserExistByID(c, req.FollowerID)
+	if err != nil {
+		return false, err
+	}
+
+	// check user
+	_, err = u.userQueryRepository.CheckUserExistByID(c, req.FollowingID)
+	if err != nil {
+		return false, err
+	}
+
+	success, err := u.userCommandRepository.UnFollow(c, req)
+	if err != nil {
+		return false, err
+	}
+	return success, nil
+}
+
+// Follow implements application.UserSerVice.
+func (u *userService) Follow(c context.Context, req model.FollowRequest) (bool, error) {
+	// check user
+	_, err := u.userQueryRepository.CheckUserExistByID(c, req.FollowerID)
+	if err != nil {
+		return false, err
+	}
+
+	// check user
+	_, err = u.userQueryRepository.CheckUserExistByID(c, req.FollowingID)
+	if err != nil {
+		return false, err
+	}
+
+	success, err := u.userCommandRepository.Follow(c, req)
+	if err != nil {
+		return false, err
+	}
+	return success, nil
+}
+
+// ChangePassword implements application.UserSerVice.
+func (u *userService) ChangePassword(c context.Context, req model.UserUpdatePassRequest) (bool, error) {
+	hashPass, err := hashPassword(req.Password)
+	if err != nil {
+		logger.Error("RegisterUser: hash pasword error: ", zap.Error(err))
+		return false, err
+	}
+	req.Password = hashPass
+	success, err := u.userCommandRepository.UpdatePassword(c, req)
+	if err != nil {
+		return false, err
+	}
+
+	// clear cache
+	err = u.cache.DeleteCache(c, string(req.ID))
+	if err != nil {
+		logger.Warn("UpdateUserInfo: Clear cache with userID error", zap.Error(err))
+	}
+	return success, nil
+}
+
 // UpdateUserInfo implements application.UserSerVice.
 func (u *userService) UpdateUserInfo(c context.Context, req model.UserUpdateRequest) (bool, error) {
 	success, err := u.userCommandRepository.UpdateUserInfo(c, req)
@@ -32,7 +95,7 @@ func (u *userService) UpdateUserInfo(c context.Context, req model.UserUpdateRequ
 	// clear cache
 	err = u.cache.DeleteCache(c, string(req.ID))
 	if err != nil {
-		logger.Error("UpdateUserInfo: Clear cache with userID error", zap.Error(err))
+		logger.Warn("UpdateUserInfo: Clear cache with userID error", zap.Error(err))
 	}
 
 	return success, nil
@@ -58,7 +121,7 @@ func (u *userService) GetUserInfo(c context.Context, userID int) (*model.UserInf
 	// save cache
 	err = u.cache.SetCacheStructData(c, string(userID), res, 24*time.Hour)
 	if err != nil {
-		logger.Error("Save user info to cache error", zap.Error(err))
+		logger.Warn("Save user info to cache error", zap.Error(err))
 	}
 	return res, nil
 }

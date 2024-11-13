@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/jmoiron/sqlx"
+	resError "github.com/nhutHao02/social-network-common-service/utils/error"
 	"github.com/nhutHao02/social-network-common-service/utils/logger"
 	"github.com/nhutHao02/social-network-user-service/internal/domain/interface/user"
 	"github.com/nhutHao02/social-network-user-service/internal/domain/model"
@@ -12,6 +13,42 @@ import (
 
 type userCommandRepository struct {
 	db *sqlx.DB
+}
+
+// Follow implements user.UserCommandRepository.
+func (repo *userCommandRepository) UnFollow(ctx context.Context, req model.FollowRequest) (bool, error) {
+	query := `delete from follow where FollowerID = :FollowerID and FollowingID = :FollowingID`
+	_, err := repo.db.NamedExecContext(ctx, query, req)
+	if err != nil {
+		return false, err
+	}
+	return true, nil
+}
+
+// Follow implements user.UserCommandRepository.
+func (repo *userCommandRepository) Follow(ctx context.Context, req model.FollowRequest) (bool, error) {
+	query := `INSERT INTO follow (FollowerID, FollowingID) VALUES (:FollowerID, :FollowingID)`
+	_, err := repo.db.NamedExecContext(ctx, query, req)
+	if err != nil {
+		return false, err
+	}
+	return true, nil
+}
+
+// UpdatePassword implements user.UserCommandRepository.
+func (repo *userCommandRepository) UpdatePassword(ctx context.Context, req model.UserUpdatePassRequest) (bool, error) {
+	query := `UPDATE user u
+				SET u.Password = :Password
+				WHERE u.ID = :ID and u.DeletedAt is null`
+	result, err := repo.db.NamedExecContext(ctx, query, req)
+	if err != nil {
+		return false, err
+	}
+	rows, err := result.RowsAffected()
+	if rows == 0 {
+		return false, resError.NewResError(nil, "User not exist")
+	}
+	return true, nil
 }
 
 func insertNewLocation(ctx context.Context, tx *sqlx.Tx, req model.UserUpdateRequest) (bool, error) {

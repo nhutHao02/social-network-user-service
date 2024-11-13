@@ -5,6 +5,7 @@ import (
 	"database/sql"
 
 	"github.com/jmoiron/sqlx"
+	resError "github.com/nhutHao02/social-network-common-service/utils/error"
 	"github.com/nhutHao02/social-network-common-service/utils/logger"
 	"github.com/nhutHao02/social-network-user-service/internal/domain/entity"
 	"github.com/nhutHao02/social-network-user-service/internal/domain/interface/user"
@@ -14,6 +15,21 @@ import (
 
 type userQueryRepository struct {
 	db *sqlx.DB
+}
+
+// CheckUserExistByID implements user.UserQueryRepository.
+func (repo *userQueryRepository) CheckUserExistByID(ctx context.Context, ID int) (bool, error) {
+	var userID int
+	query := `select u.ID from user u where u.ID = ? and u.DeletedAt is null`
+
+	err := repo.db.GetContext(ctx, &userID, query, ID)
+	if err == sql.ErrNoRows {
+		return false, resError.NewResError(nil, "User not exist")
+	}
+	if err != nil {
+		return false, err
+	}
+	return true, nil
 }
 
 // GetUserInfo implements user.UserQueryRepository.
@@ -43,11 +59,11 @@ func (repo *userQueryRepository) GetUserInfo(ctx context.Context, userID int) (*
 				where u.ID = ? and u.DeletedAt is null and l.DeletedAt is null`
 
 	err := repo.db.GetContext(ctx, &res, query, userID)
+	if err == sql.ErrNoRows {
+		logger.Error("GetUserInfo: repo get user info error", zap.Error(err))
+		return nil, nil
+	}
 	if err != nil {
-		if err == sql.ErrNoRows {
-			logger.Error("GetUserInfo: repo get user info error", zap.Error(err))
-			return nil, nil
-		}
 		logger.Error("GetUserInfo: repo get user info error", zap.Error(err))
 		return nil, err
 	}

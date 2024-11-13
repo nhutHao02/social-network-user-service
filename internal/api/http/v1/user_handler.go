@@ -98,3 +98,78 @@ func (h *UserHandler) UpdateUserInfo(c *gin.Context) {
 	c.JSON(http.StatusOK, common.NewSuccessResponse(success))
 
 }
+
+func (h *UserHandler) ChangePassword(c *gin.Context) {
+	var req model.UserUpdatePassRequest
+	err := request.GetBodyJSON(c, &req)
+	if err != nil {
+		return
+	}
+	userID, err := token.GetUserId(c)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, common.NewErrorResponse(err.Error(), "Update Password failure "))
+		return
+	}
+	if req.ID != int(userID) {
+		c.JSON(http.StatusBadRequest, common.NewErrorResponse("Invalid user ID", "Update Password failure"))
+		return
+	}
+
+	success, err := h.userService.ChangePassword(c.Request.Context(), req)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, common.NewErrorResponse(err.Error(), "Update Password failure"))
+		return
+	}
+	c.JSON(http.StatusOK, common.NewSuccessResponse(success))
+}
+
+func (h *UserHandler) Follow(c *gin.Context) {
+	var req model.FollowRequest
+	err := request.GetBodyJSON(c, &req)
+	if err != nil {
+		return
+	}
+
+	userID, err := token.GetUserId(c)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, common.NewErrorResponse(err.Error(), "Follow failure "))
+		return
+	}
+	if req.FollowerID != int(userID) {
+		c.JSON(http.StatusBadRequest, common.NewErrorResponse("Invalid user ID", "Follow failure"))
+		return
+	}
+
+	success, err := h.userService.Follow(c.Request.Context(), req)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, common.NewErrorResponse(err.Error(), "Follow failure"))
+		return
+	}
+	c.JSON(http.StatusOK, common.NewSuccessResponse(success))
+
+}
+
+func (h *UserHandler) UnFollow(c *gin.Context) {
+	var req model.FollowRequest
+	err := request.GetBodyJSON(c, &req)
+	if err != nil {
+		return
+	}
+
+	userID, err := token.GetUserId(c)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, common.NewErrorResponse(err.Error(), "UnFollow failure "))
+		return
+	}
+	if req.FollowerID != int(userID) {
+		c.JSON(http.StatusBadRequest, common.NewErrorResponse("Invalid user ID", "UnFollow failure"))
+		return
+	}
+
+	success, err := h.userService.UnFollow(c.Request.Context(), req)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, common.NewErrorResponse(err.Error(), "Follow failure"))
+		return
+	}
+	c.JSON(http.StatusOK, common.NewSuccessResponse(success))
+}
