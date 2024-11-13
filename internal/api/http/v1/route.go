@@ -14,9 +14,14 @@ func MapRoutes(
 	{
 		v1.Use(middleware.JwtAuthMiddleware(logger.GetDefaultLogger()))
 		vUser := v1.Group("/user")
+
 		vUser.GET(":id", userHandler.GetUserInfo)
+		vUser.GET("follower/:id", userHandler.GetFollower)
+		vUser.GET("following/:id", userHandler.GetFollowing)
+
 		vUser.PUT("", userHandler.UpdateUserInfo)
 		vUser.PUT("change-password", userHandler.ChangePassword)
+
 		vUser.POST("follow", userHandler.Follow)
 		vUser.POST("un-follow", userHandler.UnFollow)
 	}

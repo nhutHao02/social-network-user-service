@@ -14,4 +14,5 @@ type UserSerVice interface {
 	ChangePassword(c context.Context, req model.UserUpdatePassRequest) (bool, error)
 	Follow(c context.Context, req model.FollowRequest) (bool, error)
 	UnFollow(c context.Context, req model.FollowRequest) (bool, error)
+	GetFollow(c context.Context, idParam model.FollowIDParam, isFollower bool) (*model.FollowResponse, error)
 }

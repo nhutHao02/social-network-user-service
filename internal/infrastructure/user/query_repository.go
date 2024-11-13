@@ -17,6 +17,47 @@ type userQueryRepository struct {
 	db *sqlx.DB
 }
 
+func getFollowQuery(isFollower bool) string {
+	if isFollower {
+		return `select u.ID ,
+					u.Email ,
+					u.FullName ,
+					u.UrlAvt ,
+					u.UrlBackground ,
+					u.CreatedAt ,
+					u.UpdatedAt 
+					from follow f 
+					left join user u 
+					on f.FollowerID = u.ID 
+					where f.FollowingID = ? and u.DeletedAt is null`
+	}
+	return `select u.ID ,
+					u.Email ,
+					u.FullName ,
+					u.UrlAvt ,
+					u.UrlBackground ,
+					u.CreatedAt ,
+					u.UpdatedAt 
+					from follow f 
+					left join user u 
+					on f.FollowingID = u.ID 
+					where f.FollowerID = ? and u.DeletedAt is null`
+}
+
+// GetFollower implements user.UserQueryRepository.
+func (repo *userQueryRepository) GetFollow(
+	ctx context.Context, id int, isFollower bool) (*model.FollowResponse, error) {
+	var res model.FollowResponse
+
+	query := getFollowQuery(isFollower)
+	err := repo.db.SelectContext(ctx, &res.UserInfo, query, id)
+	if err != nil {
+		return nil, err
+	}
+	res.Total = len(res.UserInfo)
+	return &res, nil
+}
+
 // CheckUserExistByID implements user.UserQueryRepository.
 func (repo *userQueryRepository) CheckUserExistByID(ctx context.Context, ID int) (bool, error) {
 	var userID int
@@ -24,9 +65,11 @@ func (repo *userQueryRepository) CheckUserExistByID(ctx context.Context, ID int)
 
 	err := repo.db.GetContext(ctx, &userID, query, ID)
 	if err == sql.ErrNoRows {
+		logger.Error("CheckUserExistByID: sql no rows ", zap.Error(err))
 		return false, resError.NewResError(nil, "User not exist")
 	}
 	if err != nil {
+		logger.Error("CheckUserExistByID: error ", zap.Error(err))
 		return false, err
 	}
 	return true, nil

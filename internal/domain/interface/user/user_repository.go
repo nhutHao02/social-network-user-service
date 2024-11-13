@@ -12,6 +12,7 @@ type UserQueryRepository interface {
 	Login(ctx context.Context, req model.LoginRequest) (*entity.User, error)
 	GetUserInfo(ctx context.Context, userID int) (*model.UserInfoResponse, error)
 	CheckUserExistByID(ctx context.Context, ID int) (bool, error)
+	GetFollow(ctx context.Context, id int, isFollower bool) (*model.FollowResponse, error)
 }
 
 type UserCommandRepository interface {

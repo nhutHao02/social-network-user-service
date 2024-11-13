@@ -22,6 +22,23 @@ type userService struct {
 	cache                 *redis.RedisClient
 }
 
+// GetFollower implements application.UserSerVice.
+func (u *userService) GetFollow(
+	c context.Context, idParam model.FollowIDParam, isFollower bool) (*model.FollowResponse, error) {
+	// check user
+	_, err := u.userQueryRepository.CheckUserExistByID(c, idParam.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	data, err := u.userQueryRepository.GetFollow(c, idParam.ID, isFollower)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
+
+}
+
 // UnFollow implements application.UserSerVice.
 func (u *userService) UnFollow(c context.Context, req model.FollowRequest) (bool, error) {
 	// check user
