@@ -11,6 +11,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	"github.com/nhutHao02/social-network-user-service/config"
 	"github.com/nhutHao02/social-network-user-service/internal/api"
+	"github.com/nhutHao02/social-network-user-service/internal/api/grpc"
 	"github.com/nhutHao02/social-network-user-service/internal/api/http"
 	"github.com/nhutHao02/social-network-user-service/internal/api/http/v1"
 	"github.com/nhutHao02/social-network-user-service/internal/application/imp"
@@ -26,7 +27,8 @@ func InitializeServer(cfg *config.Config, db *sqlx.DB, rdb *redis.RedisClient) *
 	userSerVice := imp.NewUserService(userQueryRepository, userCommandRepository, rdb)
 	userHandler := v1.NewUserHandler(userSerVice)
 	httpServer := http.NewHTTPServer(cfg, userHandler)
-	server := api.NewSerVer(httpServer)
+	grpcServer := grpc.NewGRPCServer(cfg, userSerVice)
+	server := api.NewSerVer(httpServer, grpcServer)
 	return server
 }
 
@@ -34,7 +36,7 @@ func InitializeServer(cfg *config.Config, db *sqlx.DB, rdb *redis.RedisClient) *
 
 var serverSet = wire.NewSet(api.NewSerVer)
 
-var itemServerSet = wire.NewSet(http.NewHTTPServer)
+var itemServerSet = wire.NewSet(http.NewHTTPServer, grpc.NewGRPCServer)
 
 var httpHandlerSet = wire.NewSet(v1.NewUserHandler)
 

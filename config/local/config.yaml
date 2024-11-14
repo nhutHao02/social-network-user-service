@@ -1,6 +1,6 @@
 service-name: user_service
 http-server:
-  address: "localhost:3000"
+  address: :3000
 database:
   connection-string: root:root@tcp(localhost:3306)/snuserservice?charset=utf8mb4&parseTime=True&loc=Local
   db-type: mysql
@@ -10,3 +10,5 @@ redis:
   password: ""
   db: 0
   pool-size: 1000
+grpc:
+  port: :3001

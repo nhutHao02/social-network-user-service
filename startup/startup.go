@@ -19,12 +19,12 @@ import (
 	"github.com/nhutHao02/social-network-user-service/internal"
 	"github.com/nhutHao02/social-network-user-service/internal/api"
 	"github.com/nhutHao02/social-network-user-service/pkg/redis"
+	"golang.org/x/sync/errgroup"
 )
 
 func Start() {
 	// init logger
 	initLogger()
-
 	// load congig
 	cfg := config.LoadConfig()
 
@@ -45,21 +45,24 @@ func Start() {
 
 	// init Server
 	server := internal.InitializeServer(cfg, db, rdb)
-
-	// server
-	// http_server := http.NewHTTPServer(cfg)
-
-	// server := api.NewSerVer(http_server)
 	runServer(server)
 
 }
 
 func runServer(server *api.Server) {
+	var g errgroup.Group
 
-	// run http server
-	server.HTTPServer.RunHTTPServer()
+	g.Go(func() error {
+		return server.HTTPServer.RunHTTPServer()
+	})
 
-	// run grpc server
+	g.Go(func() error {
+		return server.GRPCServer.RunGRPCServer()
+	})
+
+	if err := g.Wait(); err != nil {
+		logger.Fatal("Error when start server", zap.Error(err))
+	}
 }
 
 func initLogger() {

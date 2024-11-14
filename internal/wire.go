@@ -8,6 +8,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	"github.com/nhutHao02/social-network-user-service/config"
 	"github.com/nhutHao02/social-network-user-service/internal/api"
+	grpcServer "github.com/nhutHao02/social-network-user-service/internal/api/grpc"
 	"github.com/nhutHao02/social-network-user-service/internal/api/http"
 	"github.com/nhutHao02/social-network-user-service/internal/api/http/v1"
 	"github.com/nhutHao02/social-network-user-service/internal/application/imp"
@@ -21,6 +22,7 @@ var serverSet = wire.NewSet(
 
 var itemServerSet = wire.NewSet(
 	http.NewHTTPServer,
+	grpcServer.NewGRPCServer,
 )
 
 var httpHandlerSet = wire.NewSet(

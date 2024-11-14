@@ -1,0 +1,15 @@
+syntax = "proto3";
+package user;
+
+option go_package = "user_service/internal/grpc";
+
+message GetUserRequest {
+    int64 userID = 1;
+}
+
+message GetUserResponse {
+    int64 id = 1;
+    string email = 2;
+    string fullName = 3;
+    string urlAvt = 4;
+}

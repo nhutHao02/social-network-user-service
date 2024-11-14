@@ -13,6 +13,7 @@ type Config struct {
 	HTTPServer *HTTPServerConfig `yaml:"http-server"`
 	Database   *DatabaseConfig   `yaml:"database"`
 	Redis      *RedisConfig      `yaml:"redis"`
+	GRPC       *GRPCConfig       `yaml:"grpc"`
 }
 
 type HTTPServerConfig struct {
@@ -30,6 +31,10 @@ type RedisConfig struct {
 	Password string `yaml:"password"`
 	Db       int    `yaml:"db"`
 	PoolSize int    `yaml:"pool-size"`
+}
+
+type GRPCConfig struct {
+	Port string `yaml:"port"`
 }
 
 func LoadConfig() *Config {
