@@ -3,7 +3,7 @@ package model
 import "time"
 
 type LocationResponse struct {
-	ID          *int       `json:"id" db:"ID"`
+	ID          *uint64    `json:"id" db:"ID"`
 	City        *string    `json:"city" db:"City"`
 	District    *string    `json:"district" db:"District"`
 	Ward        *string    `json:"ward" db:"Ward"`

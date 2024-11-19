@@ -1,12 +1,14 @@
 module github.com/nhutHao02/social-network-user-service
 
-go 1.20
+go 1.22.0
+
+toolchain go1.22.9
 
 require (
 	github.com/gin-gonic/gin v1.10.0
 	github.com/golang-migrate/migrate/v4 v4.18.1
 	github.com/google/wire v0.6.0
-	github.com/nhutHao02/social-network-common-service v0.0.0-20241114152704-1243dfc3920d
+	github.com/nhutHao02/social-network-common-service v0.0.0-20241119013730-b0c11b810318
 	go.uber.org/zap v1.27.0
 	google.golang.org/grpc v1.64.1
 	gopkg.in/yaml.v3 v3.0.1

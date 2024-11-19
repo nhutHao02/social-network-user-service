@@ -7,7 +7,7 @@ import (
 )
 
 func (s *GRPCServer) GetUserInfo(ctx context.Context, req *pb.GetUserRequest) (*pb.GetUserResponse, error) {
-	user, err := s.UserService.GetUserInfo(ctx, int(req.UserID))
+	user, err := s.UserService.GetUserInfo(ctx, req.UserID)
 	if err != nil {
 		return nil, err
 	}

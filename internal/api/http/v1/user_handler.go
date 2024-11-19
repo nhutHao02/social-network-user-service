@@ -70,7 +70,7 @@ func (h *UserHandler) GetUserInfo(c *gin.Context) {
 		return
 	}
 
-	res, err := h.userService.GetUserInfo(c.Request.Context(), userParam.ID)
+	res, err := h.userService.GetUserInfo(c.Request.Context(), int64(userParam.ID))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, common.NewErrorResponse(err.Error(), "Get user info failure"))
 		return
@@ -89,7 +89,7 @@ func (h *UserHandler) UpdateUserInfo(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, common.NewErrorResponse(err.Error(), constants.UpdateUserInfoFailure))
 		return
 	}
-	if req.ID != int(userID) {
+	if int(req.ID) != userID {
 		c.JSON(http.StatusBadRequest, common.NewErrorResponse(constants.InvalidUserID, constants.UpdateUserInfoFailure))
 		return
 	}
@@ -114,7 +114,7 @@ func (h *UserHandler) ChangePassword(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, common.NewErrorResponse(err.Error(), constants.ChangePasswordFailure))
 		return
 	}
-	if req.ID != int(userID) {
+	if int(req.ID) != userID {
 		c.JSON(http.StatusBadRequest, common.NewErrorResponse(constants.InvalidUserID, constants.ChangePasswordFailure))
 		return
 	}
@@ -139,7 +139,7 @@ func (h *UserHandler) Follow(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, common.NewErrorResponse(err.Error(), constants.FollowFailure))
 		return
 	}
-	if req.FollowerID != int(userID) {
+	if int(req.FollowerID) != userID {
 		c.JSON(http.StatusBadRequest, common.NewErrorResponse(constants.InvalidUserID, constants.FollowFailure))
 		return
 	}
@@ -165,7 +165,7 @@ func (h *UserHandler) UnFollow(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, common.NewErrorResponse(err.Error(), constants.UnFollowFailure))
 		return
 	}
-	if req.FollowerID != int(userID) {
+	if int(req.FollowerID) != userID {
 		c.JSON(http.StatusBadRequest, common.NewErrorResponse(constants.InvalidUserID, constants.UnFollowFailure))
 		return
 	}

@@ -1,12 +1,12 @@
 package model
 
 type FollowRequest struct {
-	FollowerID  int `json:"followerID" db:"FollowerID"`
-	FollowingID int `json:"followingID" db:"FollowingID"`
+	FollowerID  uint64 `json:"followerID" db:"FollowerID"`
+	FollowingID uint64 `json:"followingID" db:"FollowingID"`
 }
 
 type FollowIDParam struct {
-	ID int `uri:"id"`
+	ID uint64 `uri:"id"`
 }
 
 type FollowResponse struct {

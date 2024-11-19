@@ -10,9 +10,9 @@ import (
 type UserQueryRepository interface {
 	CheckUserExisted(ctx context.Context, email string) (bool, error)
 	Login(ctx context.Context, req model.LoginRequest) (*entity.User, error)
-	GetUserInfo(ctx context.Context, userID int) (*model.UserInfoResponse, error)
-	CheckUserExistByID(ctx context.Context, ID int) (bool, error)
-	GetFollow(ctx context.Context, id int, isFollower bool) (*model.FollowResponse, error)
+	GetUserInfo(ctx context.Context, userID int64) (*model.UserInfoResponse, error)
+	CheckUserExistByID(ctx context.Context, ID uint64) (bool, error)
+	GetFollow(ctx context.Context, id uint64, isFollower bool) (*model.FollowResponse, error)
 }
 
 type UserCommandRepository interface {

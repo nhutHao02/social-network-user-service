@@ -5,11 +5,11 @@ import (
 )
 
 type UserParam struct {
-	ID int `uri:"id"`
+	ID uint64 `uri:"id"`
 }
 
 type UserInfoResponse struct {
-	ID               int               `json:"id" db:"ID"`
+	ID               uint64            `json:"id" db:"ID"`
 	Email            string            `json:"email" db:"Email"`
 	FullName         *string           `json:"fullName" db:"FullName"`
 	Sex              *bool             `json:"sex" db:"Sex"`
@@ -23,7 +23,7 @@ type UserInfoResponse struct {
 }
 
 type UserUpdateRequest struct {
-	ID            int                    `json:"id" db:"ID"`
+	ID            uint64                 `json:"id" db:"ID"`
 	FullName      *string                `json:"fullName" db:"FullName"`
 	Sex           *bool                  `json:"sex" db:"Sex"`
 	Bio           *string                `json:"bio" db:"Bio"`
@@ -33,12 +33,12 @@ type UserUpdateRequest struct {
 }
 
 type UserUpdatePassRequest struct {
-	ID       int    `json:"id" db:"ID"`
+	ID       uint64 `json:"id" db:"ID"`
 	Password string `json:"password" db:"Password"`
 }
 
 type FollowUserInfoResponse struct {
-	ID            int        `json:"id" db:"ID"`
+	ID            uint64     `json:"id" db:"ID"`
 	Email         string     `json:"email" db:"Email"`
 	FullName      *string    `json:"fullName" db:"FullName"`
 	UrlAvt        *string    `json:"urlAvt" db:"UrlAvt"`

@@ -119,7 +119,7 @@ func (u *userService) UpdateUserInfo(c context.Context, req model.UserUpdateRequ
 }
 
 // GetUserInfo implements application.UserSerVice.
-func (u *userService) GetUserInfo(c context.Context, userID int) (*model.UserInfoResponse, error) {
+func (u *userService) GetUserInfo(c context.Context, userID int64) (*model.UserInfoResponse, error) {
 	// check cache
 	value, err := u.cache.GetCache(c, string(userID))
 	if len(strings.TrimSpace(value)) != 0 && err == nil {
@@ -195,7 +195,7 @@ func (u *userService) Login(c context.Context, req model.LoginRequest) (model.Lo
 		return res, resError.NewResError(nil, "Invalid password")
 	}
 
-	token, err := token.CreateToken(user.ID)
+	token, err := token.CreateToken(int(user.ID))
 	if err != nil {
 		logger.Error("Login: create token error: ", zap.Error(err))
 		return res, err

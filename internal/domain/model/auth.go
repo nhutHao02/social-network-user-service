@@ -16,6 +16,6 @@ type LoginRequest struct {
 }
 
 type LoginResponse struct {
-	ID    int    `json:"id"`
+	ID    uint64 `json:"id"`
 	Token string `json:"token"`
 }

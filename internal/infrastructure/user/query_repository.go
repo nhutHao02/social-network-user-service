@@ -46,7 +46,7 @@ func getFollowQuery(isFollower bool) string {
 
 // GetFollower implements user.UserQueryRepository.
 func (repo *userQueryRepository) GetFollow(
-	ctx context.Context, id int, isFollower bool) (*model.FollowResponse, error) {
+	ctx context.Context, id uint64, isFollower bool) (*model.FollowResponse, error) {
 	var res model.FollowResponse
 
 	query := getFollowQuery(isFollower)
@@ -59,7 +59,7 @@ func (repo *userQueryRepository) GetFollow(
 }
 
 // CheckUserExistByID implements user.UserQueryRepository.
-func (repo *userQueryRepository) CheckUserExistByID(ctx context.Context, ID int) (bool, error) {
+func (repo *userQueryRepository) CheckUserExistByID(ctx context.Context, ID uint64) (bool, error) {
 	var userID int
 	query := `select u.ID from user u where u.ID = ? and u.DeletedAt is null`
 
@@ -76,7 +76,7 @@ func (repo *userQueryRepository) CheckUserExistByID(ctx context.Context, ID int)
 }
 
 // GetUserInfo implements user.UserQueryRepository.
-func (repo *userQueryRepository) GetUserInfo(ctx context.Context, userID int) (*model.UserInfoResponse, error) {
+func (repo *userQueryRepository) GetUserInfo(ctx context.Context, userID int64) (*model.UserInfoResponse, error) {
 	var res model.UserInfoResponse
 	query := `select 
 				u.ID ,
