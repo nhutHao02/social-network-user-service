@@ -18,30 +18,23 @@ type userQueryRepository struct {
 }
 
 func getFollowQuery(isFollower bool) string {
+	querySelect := `select u.ID ,
+					u.Email ,
+					u.FullName ,
+					u.UrlAvt ,
+					u.UrlBackground ,
+					u.CreatedAt ,
+					u.UpdatedAt 
+					from follow f `
+	queryJoin := `left join user u 
+					on f.FollowingID = u.ID `
+	queryClause := `where f.FollowerID = ? and u.DeletedAt is null`
 	if isFollower {
-		return `select u.ID ,
-					u.Email ,
-					u.FullName ,
-					u.UrlAvt ,
-					u.UrlBackground ,
-					u.CreatedAt ,
-					u.UpdatedAt 
-					from follow f 
-					left join user u 
-					on f.FollowerID = u.ID 
-					where f.FollowingID = ? and u.DeletedAt is null`
+		queryJoin = `left join user u 
+						on f.FollowerID = u.ID `
+		queryClause = `where f.FollowingID = ? and u.DeletedAt is null`
 	}
-	return `select u.ID ,
-					u.Email ,
-					u.FullName ,
-					u.UrlAvt ,
-					u.UrlBackground ,
-					u.CreatedAt ,
-					u.UpdatedAt 
-					from follow f 
-					left join user u 
-					on f.FollowingID = u.ID 
-					where f.FollowerID = ? and u.DeletedAt is null`
+	return querySelect + queryJoin + queryClause
 }
 
 // GetFollower implements user.UserQueryRepository.

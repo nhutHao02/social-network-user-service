@@ -2,6 +2,7 @@ package imp
 
 import (
 	"context"
+	"strconv"
 	"strings"
 	"time"
 
@@ -95,7 +96,7 @@ func (u *userService) ChangePassword(c context.Context, req model.UserUpdatePass
 	}
 
 	// clear cache
-	err = u.cache.DeleteCache(c, string(req.ID))
+	err = u.cache.DeleteCache(c, strconv.Itoa(int(req.ID)))
 	if err != nil {
 		logger.Warn("UpdateUserInfo: Clear cache with userID error", zap.Error(err))
 	}
@@ -110,7 +111,7 @@ func (u *userService) UpdateUserInfo(c context.Context, req model.UserUpdateRequ
 	}
 
 	// clear cache
-	err = u.cache.DeleteCache(c, string(req.ID))
+	err = u.cache.DeleteCache(c, strconv.Itoa(int(req.ID)))
 	if err != nil {
 		logger.Warn("UpdateUserInfo: Clear cache with userID error", zap.Error(err))
 	}
