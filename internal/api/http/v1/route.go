@@ -4,6 +4,10 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/nhutHao02/social-network-common-service/middleware"
 	"github.com/nhutHao02/social-network-common-service/utils/logger"
+
+	_ "github.com/nhutHao02/social-network-user-service/docs"
+	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func MapRoutes(
@@ -32,4 +36,5 @@ func MapRoutes(
 		v1Guest.POST("/sign-up", userHandler.SignUp)
 	}
 
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 }

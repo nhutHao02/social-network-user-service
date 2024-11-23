@@ -131,7 +131,9 @@ func (repo *userQueryRepository) Login(ctx context.Context, req model.LoginReque
 
 func (repo *userQueryRepository) CheckUserExisted(ctx context.Context, email string) (bool, error) {
 	var count int
-	query := "SELECT EXISTS(SELECT * FROM `user` u WHERE email = ?);"
+	query := `select 1
+				from user u
+				where u.Email = ? and u.DeletedAt is null`
 
 	err := repo.db.GetContext(ctx, &count, query, email)
 	if err != nil {
