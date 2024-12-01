@@ -2,6 +2,7 @@ package imp
 
 import (
 	"context"
+	"database/sql"
 	"strconv"
 	"strings"
 	"time"
@@ -158,7 +159,7 @@ func verifyPassword(password, hash string) bool {
 func (u *userService) RegisterUser(c context.Context, req model.SignUpRequest) (bool, error) {
 
 	existed, err := u.userQueryRepository.CheckUserExisted(c, req.Email)
-	if err != nil {
+	if err != nil && err != sql.ErrNoRows {
 		return false, err
 	}
 
