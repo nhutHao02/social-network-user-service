@@ -123,7 +123,7 @@ func (u *userService) UpdateUserInfo(c context.Context, req model.UserUpdateRequ
 // GetUserInfo implements application.UserSerVice.
 func (u *userService) GetUserInfo(c context.Context, userID int64) (*model.UserInfoResponse, error) {
 	// check cache
-	value, err := u.cache.GetCache(c, string(userID))
+	value, err := u.cache.GetCache(c, strconv.Itoa(int(userID)))
 	if len(strings.TrimSpace(value)) != 0 && err == nil {
 		var res model.UserInfoResponse
 		err = u.cache.ConvertDataToStruct(&res, value)
@@ -138,7 +138,7 @@ func (u *userService) GetUserInfo(c context.Context, userID int64) (*model.UserI
 	}
 
 	// save cache
-	err = u.cache.SetCacheStructData(c, string(userID), res, 24*time.Hour)
+	err = u.cache.SetCacheStructData(c, strconv.Itoa(int(userID)), res, 24*time.Hour)
 	if err != nil {
 		logger.Warn("Save user info to cache error", zap.Error(err))
 	}
